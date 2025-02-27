@@ -3,6 +3,7 @@ package org.example.OurDailyBread;
 import com.sun.net.httpserver.Authenticator;
 import org.example.WebDriverFactory.DriverFactory;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,13 +11,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class Helperbread {
     //initializing web driver and web driverwait.
     WebDriver driver;
     WebDriverWait wait;
-
+    String quantityText;
 
     //creating constructor and passing parameter
     public Helperbread(WebDriver driver) {
@@ -35,9 +37,11 @@ public class Helperbread {
     private By quantityCheck = By.xpath("//*[@type='number']");
     @FindBy (xpath ="//span[@class='count']/parent::div" )
     WebElement cartitem;
+    private By cartmsg = By.xpath("//span[@class='count']/parent::div");
     @FindBy (xpath= "//a[@title='The Family Bible Devotional ']")
     WebElement bibleText;
     private By updatebtn = By.xpath("//span[text()='Update']");
+    private By quantitymsg = By.xpath("//span[@class='count']/parent::div/span[@class='count']");
 
 
     //writing methods.
@@ -80,18 +84,61 @@ public class Helperbread {
         }
 
     }
-    public void AddandvfyCart(){
+    public void ClickADDtocart()throws Exception{
         try{
+            Actions act=new Actions(driver);
             WebElement cartele = wait.until(ExpectedConditions.elementToBeClickable(Addcart));
-            cartele.click();
-            WebElement cartclck = wait.until(ExpectedConditions.presenceOfElementLocated(cartnumber));
+            act.moveToElement(cartele).build().perform();
+            act.click(cartele).perform();
+            //cartele.click();
+            Thread.sleep(5000);
+            WebElement cartclck = wait.until(ExpectedConditions.elementToBeClickable(cartnumber));
+            act.moveToElement(cartclck).build().perform();
+            //act.click(cartclck).perform();
+           // cartclck.click();
+        }
+        catch (ElementNotInteractableException e){
+
+            WebElement cartclck = wait.until(ExpectedConditions.elementToBeClickable(cartnumber));
             cartclck.click();
-            WebElement quantityele = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityCheck));
-            quantityele.getText();
+            System.out.println("button is not available");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int QuantityvfyCheck()throws InterruptedException{
+        Thread.sleep(5000);
+        try{
+             quantityText = driver.findElement(quantityCheck).getAttribute("value");   //get value from the input field.
+            return Integer.parseInt(quantityText);       //convert string to int.
         }
         catch (Exception e){
-
+           System.out.println("quantity is null");
+           return 1;
         }
+    }
+
+    public String getCartmessage()throws InterruptedException{
+        Thread.sleep(2000);
+        WebElement cartmsgele = wait.until(ExpectedConditions.visibilityOfElementLocated(cartmsg));
+        return cartmsgele.getText();
+    }
+    public int msgquantity(String xpath){
+         WebElement quantele = driver.findElement(By.xpath(xpath));
+         String num = quantele.getText().trim();
+         return Integer.parseInt(num);
+
+    }
+    public void updateBtn(int quantity)throws InterruptedException{
+
+        WebElement quanityties = driver.findElement(quantityCheck);
+        quanityties.clear();     //clear existing value.
+        Thread.sleep(3000);
+        quanityties.sendKeys(String.valueOf(quantity));      //input new quantity from converting string to integer
+        WebElement updateele = wait.until(ExpectedConditions.elementToBeClickable(updatebtn));
+        updateele.click();     //clicking the update button.
+
     }
 
 

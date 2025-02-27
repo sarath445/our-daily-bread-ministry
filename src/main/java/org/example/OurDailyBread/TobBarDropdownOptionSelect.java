@@ -1,9 +1,6 @@
 package org.example.OurDailyBread;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -15,14 +12,15 @@ import java.util.List;
 import java.util.Set;
 
 public class TobBarDropdownOptionSelect {
-      static WebDriver driver;
-      public TobBarDropdownOptionSelect(WebDriver driver){
-         this.driver = driver;
-     }
+    static WebDriver driver;
+
+    public TobBarDropdownOptionSelect(WebDriver driver) {
+        this.driver = driver;
+    }
 
     private static By Books = By.xpath("//span[text()='Books']");
-     private static By Stationary = By.xpath("//span[text()='Stationery']");
-
+    private static By Stationary = By.xpath("//span[text()='Stationery']");
+    private static By hometitle = By.xpath("//*[@id=\"mainmenu\"]//child::li[contains(@class, \"nav-item level0\")]");
 
 
     public static void SelectDropdownOption(String xpath, String option) {
@@ -74,6 +72,26 @@ public class TobBarDropdownOptionSelect {
         }
     }
 
+    public static void selectTitleoption(String titleName) {
+        try {
+            WebElement dropdownElement = driver.findElement(hometitle); // Locate dropdown
+            List<WebElement> options = dropdownElement.findElements(hometitle); // Get all options
 
-
-}
+            for (WebElement option : options) {
+                try {
+                    String text = option.getText().trim(); // Get text safely and remove unwanted space.
+                    if (text.equalsIgnoreCase(titleName)) {
+                        option.click(); // Click the matching title
+                        System.out.println("Selected title: " + titleName);
+                        return;
+                    }
+                } catch (StaleElementReferenceException e) {
+                    System.out.println("Element became stale, retrying...");
+                    dropdownElement.findElements(By.tagName("option")); // Re-locate elements
+                }
+            }
+            System.out.println("Title not found: " + titleName);
+        } catch (NoSuchElementException e) {
+            System.out.println("Dropdown not found: " + e.getMessage());
+        }
+    }}

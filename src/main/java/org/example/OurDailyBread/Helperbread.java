@@ -140,6 +140,17 @@ public class Helperbread {
         updateele.click();     //clicking the update button.
 
     }
+    public void checkoutdetails(String Email, String Firstname, String Lastname, String company)throws Exception{
+
+          WebElement Emailfield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.Emails)));
+          Emailfield.sendKeys(Email);
+          WebElement Firstnamefield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.firstnames)));
+          Firstnamefield.sendKeys(Firstname);
+          WebElement Lastnamefield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.lastnames)));
+          Lastnamefield.sendKeys(Lastname);
+          WebElement CompanyField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.companys)));
+          CompanyField.sendKeys(company);
+    }
 
 
 

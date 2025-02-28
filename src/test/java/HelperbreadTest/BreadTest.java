@@ -1,5 +1,6 @@
 package HelperbreadTest;
 
+import ExcelUtility.DataExcel;
 import TestngListener.ITestListeners;
 import org.example.OurDailyBread.Helperbread;
 import org.example.OurDailyBread.TobBarDropdownOptionSelect;
@@ -76,15 +77,20 @@ public class BreadTest {
        Assert.assertTrue(bread.ClickShop(), "shop is clickable");
        TobBarDropdownOptionSelect.selectTitleoption("VOICES COLLECTION");
 
-
+   }
+   @Test()
+   public void checktext()throws Exception{
+       Assert.assertTrue(bread.ClickShop(), "shop is clickable");
+       TobBarDropdownOptionSelect.selectTitleoption("VOICES COLLECTION");
+       TobBarDropdownOptionSelect.selectVoicecollection("Caring Well");
    }
 
-   @AfterMethod
-   public void cleanup(){
-       driver.manage().deleteAllCookies();
-   }
-    @AfterClass
-    public void teardown(){
-       driver.quit();
-    }
+//   @AfterMethod
+//   public void cleanup(){
+//       driver.manage().deleteAllCookies();
+//   }
+//    @AfterClass
+//    public void teardown(){
+//       driver.quit();
+//    }
 }

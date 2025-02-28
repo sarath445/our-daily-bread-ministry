@@ -21,6 +21,7 @@ public class TobBarDropdownOptionSelect {
     private static By Books = By.xpath("//span[text()='Books']");
     private static By Stationary = By.xpath("//span[text()='Stationery']");
     private static By hometitle = By.xpath("//*[@id=\"mainmenu\"]//child::li[contains(@class, \"nav-item level0\")]");
+    private static By voicetitle = By.xpath("//li[@class='item product product-item']");
 
 
     public static void SelectDropdownOption(String xpath, String option) {
@@ -94,4 +95,30 @@ public class TobBarDropdownOptionSelect {
         } catch (NoSuchElementException e) {
             System.out.println("Dropdown not found: " + e.getMessage());
         }
-    }}
+    }
+    public static void selectVoicecollection(String voiceName){
+        try {
+            WebElement dropdownElement = driver.findElement(voicetitle);
+            List<WebElement> voiceoptions =  dropdownElement.findElements(voicetitle);
+
+            for(WebElement option:voiceoptions){
+                try {
+                    String text = option.getText().trim();
+                    if(text.equalsIgnoreCase(voiceName)){
+                        option.click();   //clicking the matching title
+                        System.out.println("Selected title: " + voiceName);
+                        return;
+                    }
+                }
+                catch (ElementNotInteractableException e){
+                    System.out.println("element not interacting... " + e.getMessage());
+                    dropdownElement.findElements(By.tagName("option"));
+                }
+            }
+        }
+        catch (NoSuchElementException e){
+            System.out.println("text is not found: " + e.getMessage());
+        }
+
+    }
+}

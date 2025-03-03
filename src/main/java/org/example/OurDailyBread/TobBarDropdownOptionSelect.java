@@ -22,6 +22,7 @@ public class TobBarDropdownOptionSelect {
     private static By Stationary = By.xpath("//span[text()='Stationery']");
     private static By hometitle = By.xpath("//*[@id=\"mainmenu\"]//child::li[contains(@class, \"nav-item level0\")]");
     private static By voicetitle = By.xpath("//li[@class='item product product-item']");
+    private static By titlevoice = By.xpath("//ol[@class='products list items product-items itemgrid']/li/div/child::div/following::div[@class='product details product-item-details']/strong");
 
 
     public static void SelectDropdownOption(String xpath, String option) {
@@ -81,9 +82,10 @@ public class TobBarDropdownOptionSelect {
             for (WebElement option : options) {
                 try {
                     String text = option.getText().trim(); // Get text safely and remove unwanted space.
+                    System.out.println("type of cart" + text);
                     if (text.equalsIgnoreCase(titleName)) {
                         option.click(); // Click the matching title
-                        System.out.println("Selected title: " + titleName);
+                        System.out.println("Selected title: " + text);
                         return;
                     }
                 } catch (StaleElementReferenceException e) {
@@ -96,29 +98,45 @@ public class TobBarDropdownOptionSelect {
             System.out.println("Dropdown not found: " + e.getMessage());
         }
     }
-    public static void selectVoicecollection(String voiceName){
-        try {
-            WebElement dropdownElement = driver.findElement(voicetitle);
-            List<WebElement> voiceoptions =  dropdownElement.findElements(voicetitle);
 
-            for(WebElement option:voiceoptions){
+    public static void selectVoicecollection(String voiceName) {
+        Actions act = new Actions(driver);
+        try {
+            WebElement dropdownElement = driver.findElement(titlevoice);
+            List<WebElement> voiceoptions = dropdownElement.findElements(titlevoice);
+
+            for (WebElement option : voiceoptions) {
                 try {
                     String text = option.getText().trim();
-                    if(text.equalsIgnoreCase(voiceName)){
-                        option.click();   //clicking the matching title
+                    System.out.println("types of voice" + text);
+                    if (text.equalsIgnoreCase(voiceName)) {
+                        act.moveToElement(option).build().perform();
+                        act.click(option).perform();
+                        String parentWindow = driver.getWindowHandle();
+                        Set<String> windowHandle = driver.getWindowHandles();
+
+                        for (String handle : windowHandle) {
+                            if (!handle.equals(parentWindow)) {
+                                driver.switchTo().window(handle);
+                                System.out.println("switched to new tab");
+                            }
+
+                        }
+                        //option.click();   //clicking the matching title
                         System.out.println("Selected title: " + voiceName);
                         return;
+
                     }
+
                 }
-                catch (ElementNotInteractableException e){
+                catch(ElementNotInteractableException e){
                     System.out.println("element not interacting... " + e.getMessage());
                     dropdownElement.findElements(By.tagName("option"));
                 }
             }
         }
-        catch (NoSuchElementException e){
+        catch(NoSuchElementException e){
             System.out.println("text is not found: " + e.getMessage());
         }
-
     }
 }

@@ -20,7 +20,12 @@ public class BreadTest {
     public String url = "https://www.odbm.org/";
     TobBarDropdownOptionSelect topbar;
 
-   @BeforeClass
+    @DataProvider
+    public static Object[][] shipping() {
+        return new Object[][]{};
+    }
+
+    @BeforeClass
    public void objsetup(){
        factory=new DriverFactory(driver);
        driver = factory.InitializeBrowser("chrome");
@@ -33,8 +38,8 @@ public class BreadTest {
        driver.manage().window().maximize();
    }
 
-    @Test(priority = 1)
-    public void ShopSelectBook()throws Exception{
+    @Test( dataProvider = "shipping" ,dataProviderClass = BreadTest.class)
+    public void ShopSelectBook(String Email, String Firstname, String Lastname, String company)throws Exception{
        Random random = new Random();
        int randomquantity = random.nextInt(10) + 1;     //generating numbers between 1 - 10.
        //bread.ClickShop();
@@ -64,6 +69,7 @@ public class BreadTest {
         //Assert.assertEquals(updatedquantity, randomquantity,"updated cart quantity mismatch");
         Assert.assertEquals(updatedquantity, updatedmessage, "updated quantity and message are equal");
         System.out.println("Test passed and verify with random quantity" + randomquantity);
+        bread.checkoutdetails(Email,Firstname, Lastname, company);
    }
    @Test(priority = 3)
    public void Tobbartest()throws Exception{
@@ -82,6 +88,7 @@ public class BreadTest {
    public void checktext()throws Exception{
        Assert.assertTrue(bread.ClickShop(), "shop is clickable");
        TobBarDropdownOptionSelect.selectTitleoption("VOICES COLLECTION");
+       Thread.sleep(5000);
        TobBarDropdownOptionSelect.selectVoicecollection("Caring Well");
    }
 

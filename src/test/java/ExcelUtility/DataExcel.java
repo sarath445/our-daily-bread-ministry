@@ -13,15 +13,17 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class DataExcel {
-     @DataProvider(name = "shippingdata")
-    public static Object[][] getExceldata()throws IOException {
+    //private static final String File_path = "TestData.xlsx";
 
-        File excelfile = new File("TestData.xlsx");
-        System.out.println(excelfile.exists());
+    public static Object[][] getExceldata(String sheetname, String filepath)throws IOException {
+
+
+        //File excelfile = new File("TestData.xlsx");
+        //System.out.println(excelfile.exists());
         try {
-            FileInputStream fis = new FileInputStream(excelfile);
+            FileInputStream fis = new FileInputStream(filepath);
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
-            XSSFSheet sheet = workbook.getSheet("BreadData");
+            XSSFSheet sheet = workbook.getSheet(sheetname);
             System.out.println(sheet.getPhysicalNumberOfRows());      //printing the total number of rows present in the sheet.
             int noOfrow = sheet.getPhysicalNumberOfRows();   //total number of rows present in the sheet
             int noOfcolumn = sheet.getRow(0).getLastCellNum();

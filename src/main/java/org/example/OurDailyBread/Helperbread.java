@@ -141,7 +141,9 @@ public class Helperbread {
 
     }
     public void checkoutdetails(String Email, String Firstname, String Lastname, String company)throws Exception{
-
+          WebElement checkele = wait.until(ExpectedConditions.elementToBeClickable(checkoutbtn));
+          checkele.click();
+          Thread.sleep(6000);
           WebElement Emailfield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.Emails)));
           Emailfield.sendKeys(Email);
           WebElement Firstnamefield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.firstnames)));

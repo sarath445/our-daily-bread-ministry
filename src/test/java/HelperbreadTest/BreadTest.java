@@ -20,10 +20,7 @@ public class BreadTest {
     public String url = "https://www.odbm.org/";
     TobBarDropdownOptionSelect topbar;
 
-    @DataProvider
-    public static Object[][] shipping() {
-        return new Object[][]{};
-    }
+
 
     @BeforeClass
    public void objsetup(){
@@ -38,7 +35,7 @@ public class BreadTest {
        driver.manage().window().maximize();
    }
 
-    @Test( dataProvider = "shipping" ,dataProviderClass = BreadTest.class)
+    @Test( dataProvider = "shippings", dataProviderClass = BreadTestData.class)
     public void ShopSelectBook(String Email, String Firstname, String Lastname, String company)throws Exception{
        Random random = new Random();
        int randomquantity = random.nextInt(10) + 1;     //generating numbers between 1 - 10.

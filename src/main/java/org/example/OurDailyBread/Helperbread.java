@@ -1,5 +1,6 @@
 package org.example.OurDailyBread;
 
+import com.aventstack.extentreports.util.Assert;
 import com.sun.net.httpserver.Authenticator;
 import org.example.WebDriverFactory.DriverFactory;
 import org.openqa.selenium.*;
@@ -42,7 +43,8 @@ public class Helperbread {
     WebElement bibleText;
     private By updatebtn = By.xpath("//span[text()='Update']");
     private By quantitymsg = By.xpath("//span[@class='count']/parent::div/span[@class='count']");
-
+    public static String pricebook = "//div[@class='product details product-item-details']//following::span[@data-price-type='finalPrice']/span[@class='price']";
+    public static String List_Of_Voice = "//div[@class='product details product-item-details']//following::a[@class='product-item-link']";
 
     //writing methods.
     public boolean ClickShop() {
@@ -55,7 +57,7 @@ public class Helperbread {
            System.out.println("button is not clicked");
        }
             String parentWindow = driver.getWindowHandle();    //getting current window.
-        Set<String> windowHandles = driver.getWindowHandles(); // Get all window handles
+            Set<String> windowHandles = driver.getWindowHandles(); // Get all window handles
 
         for (String handle : windowHandles) {
             if (!handle.equals(parentWindow)) {
@@ -140,21 +142,58 @@ public class Helperbread {
         updateele.click();     //clicking the update button.
 
     }
-    public void checkoutdetails(String Email, String Firstname, String Lastname, String company)throws Exception{
-          WebElement checkele = wait.until(ExpectedConditions.elementToBeClickable(checkoutbtn));
-          checkele.click();
-          Thread.sleep(6000);
-          WebElement Emailfield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.Emails)));
+    public void checkoutdetails(String Email, String Firstname, String Lastname, String company) throws Exception {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        // Click checkout button
+        WebElement checkele = wait.until(ExpectedConditions.elementToBeClickable(checkoutbtn));
+        checkele.click();
+
+        // Wait for iframe and switch to it
+        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.xpath("//iframe[@id='full_payment']")));
+
+        // Wait for email field inside iframe
+        WebElement emailField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(BreadWebElements.Email1)));
+        emailField.sendKeys(Email);
+
+          WebElement Emailfield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.Email1)));
           Emailfield.sendKeys(Email);
-          WebElement Firstnamefield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.firstnames)));
+          WebElement Firstnamefield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.firstnames1)));
           Firstnamefield.sendKeys(Firstname);
-          WebElement Lastnamefield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.lastnames)));
+          WebElement Lastnamefield = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.lastnames2)));
           Lastnamefield.sendKeys(Lastname);
-          WebElement CompanyField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.companys)));
+          WebElement CompanyField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.city)));
           CompanyField.sendKeys(company);
     }
 
+    public void bookprice(String bookname, String price)throws Exception{
+          List<WebElement> voicebookPrice = driver.findElements(By.xpath(pricebook));
+          List<WebElement> voicebooklist = driver.findElements(By.xpath(List_Of_Voice));
 
+
+          try {
+              if(voicebooklist.size()==voicebookPrice.size()){
+                  System.out.println("booklist and prizelist are same" + voicebooklist.size() + voicebookPrice.size());
+                  for(int i = 0; i<voicebooklist.size() && i<voicebookPrice.size(); i++){
+                        WebElement elementText = voicebooklist.get(i);
+                        WebElement elementPrice = voicebookPrice.get(i);    //getting value of each book and price.
+                        String book = elementText.getText().trim();
+                        String pricebook = elementPrice.getText().trim();     //getting textvalue of each book and price
+                        System.out.println("Books and price " + book + pricebook);
+
+                  }
+          }
+              else {
+                  System.out.println("size is not equal");
+
+              }
+
+
+          }
+          catch (NoSuchElementException e){
+              System.out.println("Element not found " + e.getMessage());
+        }
+    }
 
 
 

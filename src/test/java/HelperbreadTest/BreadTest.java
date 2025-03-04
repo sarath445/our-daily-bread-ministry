@@ -35,7 +35,7 @@ public class BreadTest {
        driver.manage().window().maximize();
    }
 
-    @Test( dataProvider = "shippings", dataProviderClass = BreadTestData.class)
+    @Test(priority = 1, description = "verification of adding books into cart and continue shopping", dataProvider = "shippings", dataProviderClass = BreadTestData.class)
     public void ShopSelectBook(String Email, String Firstname, String Lastname, String company)throws Exception{
        Random random = new Random();
        int randomquantity = random.nextInt(10) + 1;     //generating numbers between 1 - 10.
@@ -88,7 +88,12 @@ public class BreadTest {
        Thread.sleep(5000);
        TobBarDropdownOptionSelect.selectVoicecollection("Caring Well");
    }
-
+   @Test
+   public void BookandPrice()throws Exception{
+       Assert.assertTrue(bread.ClickShop(), "shop is clickable");
+       TobBarDropdownOptionSelect.selectTitleoption("VOICES COLLECTION");
+       bread.bookprice("Prayer and Pen", "$17.00");
+   }
 //   @AfterMethod
 //   public void cleanup(){
 //       driver.manage().deleteAllCookies();

@@ -6,4 +6,9 @@ public class BreadWebElements {
     public static String lastnames = "//div/input[@name='lastname']";
     public static String companys = "//div/input[@name='company']";
 
+    public static String Email1 = "//input[@id='email']";
+    public static String firstnames1 = "//input[@id='TextField0']";
+    public static String lastnames2 = "//input[@placeholder='Last name']";
+    public static String city = "//input[@placeholder='City']";
+
 }

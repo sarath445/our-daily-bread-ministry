@@ -22,8 +22,8 @@ public class TobBarDropdownOptionSelect {
     private static By Stationary = By.xpath("//span[text()='Stationery']");
     private static By hometitle = By.xpath("//*[@id=\"mainmenu\"]//child::li[contains(@class, \"nav-item level0\")]");
     private static By voicetitle = By.xpath("//li[@class='item product product-item']");
-    private static By titlevoice = By.xpath("//ol[@class='products list items product-items itemgrid']/li/div/child::div/following::div[@class='product details product-item-details']/strong");
-
+    private static By titlevoice = By.xpath("//div[@class='product details product-item-details']//following::a[@class='product-item-link']");
+    public static String List_Of_Voice = "//div[@class='product details product-item-details']//following::a[@class='product-item-link']";
 
     public static void SelectDropdownOption(String xpath, String option) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
@@ -102,41 +102,27 @@ public class TobBarDropdownOptionSelect {
     public static void selectVoicecollection(String voiceName) {
         Actions act = new Actions(driver);
         try {
-            WebElement dropdownElement = driver.findElement(titlevoice);
-            List<WebElement> voiceoptions = dropdownElement.findElements(titlevoice);
+            List<WebElement> AllBooksNameInVoiceOption = driver.findElements(By.xpath(List_Of_Voice));
 
-            for (WebElement option : voiceoptions) {
+            for (WebElement option : AllBooksNameInVoiceOption) {
                 try {
                     String text = option.getText().trim();
-                    System.out.println("types of voice" + text);
+                    System.out.println("Book Name : " + text);
                     if (text.equalsIgnoreCase(voiceName)) {
                         act.moveToElement(option).build().perform();
                         act.click(option).perform();
-                        String parentWindow = driver.getWindowHandle();
-                        Set<String> windowHandle = driver.getWindowHandles();
-
-                        for (String handle : windowHandle) {
-                            if (!handle.equals(parentWindow)) {
-                                driver.switchTo().window(handle);
-                                System.out.println("switched to new tab");
-                            }
-
-                        }
-                        //option.click();   //clicking the matching title
                         System.out.println("Selected title: " + voiceName);
-                        return;
-
+                        break;
                     }
 
                 }
                 catch(ElementNotInteractableException e){
                     System.out.println("element not interacting... " + e.getMessage());
-                    dropdownElement.findElements(By.tagName("option"));
                 }
             }
         }
         catch(NoSuchElementException e){
-            System.out.println("text is not found: " + e.getMessage());
+            System.out.println("Empty List , No elements found : ");
         }
     }
 }

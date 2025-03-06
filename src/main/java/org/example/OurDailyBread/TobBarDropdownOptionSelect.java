@@ -11,11 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static org.example.OurDailyBread.BreadWebElements.ourMinistry;
+
 public class TobBarDropdownOptionSelect {
     static WebDriver driver;
 
     public TobBarDropdownOptionSelect(WebDriver driver) {
         this.driver = driver;
+
     }
 
     private static By Books = By.xpath("//span[text()='Books']");
@@ -24,7 +27,7 @@ public class TobBarDropdownOptionSelect {
     private static By voicetitle = By.xpath("//li[@class='item product product-item']");
     private static By titlevoice = By.xpath("//div[@class='product details product-item-details']//following::a[@class='product-item-link']");
     public static String List_Of_Voice = "//div[@class='product details product-item-details']//following::a[@class='product-item-link']";
-
+    private static By ministries = By.xpath("//span[text()='Our Ministry']");
     public static void SelectDropdownOption(String xpath, String option) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
@@ -100,7 +103,7 @@ public class TobBarDropdownOptionSelect {
     }
 
     public static void selectVoicecollection(String voiceName) {
-        Actions act = new Actions(driver);
+Actions act = new Actions(driver);
         try {
             List<WebElement> AllBooksNameInVoiceOption = driver.findElements(By.xpath(List_Of_Voice));
 
@@ -125,4 +128,45 @@ public class TobBarDropdownOptionSelect {
             System.out.println("Empty List , No elements found : ");
         }
     }
-}
+
+    public static void selectOurministry(String ministry){
+        Actions act = new Actions(driver);
+        WebElement breadminis = driver.findElement(ministries);
+        act.moveToElement(breadminis).build().perform();
+
+            List<WebElement> searchResults = driver.findElements(By.xpath(BreadWebElements.ourMinistry));
+
+            for (WebElement result : searchResults) {
+
+                String text = result.getText();
+
+                System.out.println("text >> " + text);
+
+                if (text.equalsIgnoreCase(ministry)) {
+                    result.click();
+                    break;
+
+                }
+
+            }
+
+
+//            act.moveToElement(driver.findElement(By.xpath(BreadWebElements.ourMinistry))).build().perform();
+//            //Select dropdown = new Select(driver.findElement(By.xpath(BreadWebElements.ourMinistry)));   //using select class
+//            List<WebElement> ourministry = dropdown.getOptions();
+//
+//            for(WebElement options :ourministry){
+//                 String text =  options.getText();
+//                 if(text.equalsIgnoreCase(ministry)){
+//                     act.click(options);
+//                 }
+//
+//            }
+
+        }
+
+        }
+
+//*[@id="primaryMenuItem"]/div[3]/a/span[2]
+        //*[@class="rounded bg-white/80 shadow p-4 border border-stone-950/10 backdrop-blur-2xl flex flex-col space-y-2 transition ease-out duration-[250ms] pointer-events-none [transform:rotateX(-15deg)] h-0"])[3]//child::div)//child:
+

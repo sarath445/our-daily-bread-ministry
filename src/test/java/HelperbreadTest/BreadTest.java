@@ -56,6 +56,7 @@ public class BreadTest {
        System.out.println("Initial quanitity" + initialquantity);
 
        bread.updateBtn(randomquantity);
+       //verify the updated cart quanity and message.
         Thread.sleep(2000);
         String itemxpath ="//span[@class='count']/parent::div/span[@class='count']";
         int updatedquantity = bread.msgquantity(itemxpath);          //getting quantity
@@ -93,6 +94,10 @@ public class BreadTest {
        Assert.assertTrue(bread.ClickShop(), "shop is clickable");
        TobBarDropdownOptionSelect.selectTitleoption("VOICES COLLECTION");
        bread.bookprice("Prayer and Pen", "$17.00");
+   }
+@Test
+   public void BreadourMinistry(){
+        TobBarDropdownOptionSelect.selectOurministry("God hears her");
    }
 //   @AfterMethod
 //   public void cleanup(){

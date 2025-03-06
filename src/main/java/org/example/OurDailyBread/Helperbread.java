@@ -21,11 +21,13 @@ public class Helperbread {
     WebDriverWait wait;
     String quantityText;
 
+
     //creating constructor and passing parameter
     public Helperbread(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         PageFactory.initElements(driver,this);     //improving
+        Actions act = new Actions(driver);
     }
 
     //creating webelements.
@@ -180,7 +182,6 @@ public class Helperbread {
                         String book = elementText.getText().trim();
                         String pricebook = elementPrice.getText().trim();     //getting textvalue of each book and price
                         System.out.println("Books and price " + book + pricebook);
-
                   }
           }
               else {
@@ -188,10 +189,14 @@ public class Helperbread {
 
               }
 
-
           }
           catch (NoSuchElementException e){
               System.out.println("Element not found " + e.getMessage());
+        }
+    }
+    public void joinNowGodHears(){
+        try {
+
         }
     }
 

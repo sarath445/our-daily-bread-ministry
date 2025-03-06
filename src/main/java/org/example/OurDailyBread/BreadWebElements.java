@@ -11,4 +11,6 @@ public class BreadWebElements {
     public static String lastnames2 = "//input[@placeholder='Last name']";
     public static String city = "//input[@placeholder='City']";
 
+    public static String ourMinistry = "//div[@class='min-h-9']/div/ul/li[4]/div/div/div";
+
 }

@@ -12,5 +12,11 @@ public class BreadWebElements {
     public static String city = "//input[@placeholder='City']";
 
     public static String ourMinistry = "//div[@class='min-h-9']/div/ul/li[4]/div/div/div";
+    public static String joinNowbtn = "//span[text()='Join Now']";
+
+    public static String firstGodhearName = "//input[@name='form_fields[fname]']";
+    public static String lastGodhearName = "//input[@name='form_fields[lname]']";
+    public static String EmailGodhear = "//input[@name='form_fields[email]']";
+    public static String dropdownGodhear = "//select[@name='form_fields[location]']";
 
 }

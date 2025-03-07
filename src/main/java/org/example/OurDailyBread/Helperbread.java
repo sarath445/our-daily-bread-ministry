@@ -2,20 +2,22 @@ package org.example.OurDailyBread;
 
 import com.aventstack.extentreports.util.Assert;
 import com.sun.net.httpserver.Authenticator;
+import org.example.GenericFunctions.Genericmethods;
 import org.example.WebDriverFactory.DriverFactory;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
-public class Helperbread {
+// inheriting Genericmethods class.
+public class Helperbread extends Genericmethods {
     //initializing web driver and web driverwait.
     WebDriver driver;
     WebDriverWait wait;
@@ -24,6 +26,7 @@ public class Helperbread {
 
     //creating constructor and passing parameter
     public Helperbread(WebDriver driver) {
+         super(driver);
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         PageFactory.initElements(driver,this);     //improving
@@ -194,9 +197,45 @@ public class Helperbread {
               System.out.println("Element not found " + e.getMessage());
         }
     }
-    public void joinNowGodHears(){
+    public void joinNowGodHears()throws Exception{
         try {
+            WebElement scroll = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.joinNowbtn)));
+            scrollElement(scroll);
+            Thread.sleep(3000);
+            clickingElement(scroll);
+            Thread.sleep(2000);
+            //clickingElement(scroll);
+        }
+        catch (NoSuchElementException e){
+            System.out.println("element is not found " + e.getMessage());
 
+        }
+    }
+    public void fillingForm(String First, String Last, String Email, String countryOption)throws Exception{
+        try{
+              WebElement firstelement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.firstGodhearName)));
+              firstelement.sendKeys(First);
+              WebElement lastelement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.lastGodhearName)));
+              lastelement.sendKeys(Last);
+              WebElement Emailelement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.EmailGodhear)));
+              Emailelement.sendKeys(Email);
+              WebElement Countryelement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.dropdownGodhear)));
+
+            Select dropdownCountry = new Select(Countryelement);     //setting all webelements
+            List<WebElement> countryList = dropdownCountry.getOptions();     //storing all list elements as options.
+            for(WebElement options : countryList){
+                String text = options.getText();
+                System.out.println("total countries in the list " + text);
+                if (text.equalsIgnoreCase(countryOption)){
+                    options.click();
+                    break;
+                }
+            }
+
+
+        }
+        catch (ElementNotInteractableException e){
+            System.out.println("Element is not interactimg....." + e.getMessage());
         }
     }
 

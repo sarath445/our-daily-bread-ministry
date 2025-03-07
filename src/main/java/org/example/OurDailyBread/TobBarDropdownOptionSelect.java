@@ -144,6 +144,16 @@ Actions act = new Actions(driver);
 
                 if (text.equalsIgnoreCase(ministry)) {
                     result.click();
+                    String parentWindow = driver.getWindowHandle();    //getting current window.
+                    Set<String> windowHandles = driver.getWindowHandles(); // Get all window handles
+
+                    for (String handle : windowHandles) {
+                        if (!handle.equals(parentWindow)) {
+                            driver.switchTo().window(handle); // Switch to new tab
+                            System.out.println("Switched to new tab.");
+                        }
+                    }
+
                     break;
 
                 }

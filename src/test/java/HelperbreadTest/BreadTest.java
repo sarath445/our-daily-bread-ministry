@@ -95,9 +95,11 @@ public class BreadTest {
        TobBarDropdownOptionSelect.selectTitleoption("VOICES COLLECTION");
        bread.bookprice("Prayer and Pen", "$17.00");
    }
-@Test
-   public void BreadourMinistry(){
+   @Test( dataProvider = "shippings", dataProviderClass = BreadTestData.class)
+   public void BreadourMinistry(String First, String Last, String Email)throws Exception{
         TobBarDropdownOptionSelect.selectOurministry("God hears her");
+        bread.joinNowGodHears();
+        bread.fillingForm(First, Last, Email,"Tunisia");
    }
 //   @AfterMethod
 //   public void cleanup(){

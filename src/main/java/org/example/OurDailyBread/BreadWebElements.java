@@ -18,5 +18,9 @@ public class BreadWebElements {
     public static String lastGodhearName = "//input[@name='form_fields[lname]']";
     public static String EmailGodhear = "//input[@name='form_fields[email]']";
     public static String dropdownGodhear = "//select[@name='form_fields[location]']";
+    public static String dropdownOptionsGod  = "//select[@name='form_fields[location]']/option";
+    public static String submitform = "//button[@type='submit']";
+    public static String successMsg = "//h2[contains(text(),'you’ll see a note from')]";
+    public static String successmsgNew = "//h2[starts-with(text(),'Welcome to the God')]";
 
 }

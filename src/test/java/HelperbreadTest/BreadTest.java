@@ -96,10 +96,15 @@ public class BreadTest {
        bread.bookprice("Prayer and Pen", "$17.00");
    }
    @Test( dataProvider = "shippings", dataProviderClass = BreadTestData.class)
-   public void BreadourMinistry(String First, String Last, String Email)throws Exception{
+   public void BreadourMinistry(String First, String Last, String Email, String Country)throws Exception{
         TobBarDropdownOptionSelect.selectOurministry("God hears her");
         bread.joinNowGodHears();
-        bread.fillingForm(First, Last, Email,"Tunisia");
+        bread.fillingForm(First, Last, Email, Country);
+        String Actualmsg = bread.vfySuccessfullmsg();
+        boolean k = Actualmsg.startsWith("ddnfd");
+        System.out.println(k);
+        String Expectedmsg = "Welcome to the God Hears Her community! By signing up to receive emails, you’ll see a note from Our Daily Bread Ministries in your inbox. Please use that email to confirm your account to access all the latest God Hears Her news.";
+        Assert.assertEquals(Actualmsg.trim(), Expectedmsg.trim(), "messages doesn't matches");
    }
 //   @AfterMethod
 //   public void cleanup(){

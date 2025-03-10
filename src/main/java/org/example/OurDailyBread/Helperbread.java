@@ -213,6 +213,7 @@ public class Helperbread extends Genericmethods {
     }
     public void fillingForm(String First, String Last, String Email, String countryOption)throws Exception{
         try{
+            WebElement formSubmit = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.submitform)));
               WebElement firstelement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.firstGodhearName)));
               firstelement.sendKeys(First);
               WebElement lastelement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.lastGodhearName)));
@@ -221,22 +222,31 @@ public class Helperbread extends Genericmethods {
               Emailelement.sendKeys(Email);
               WebElement Countryelement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.dropdownGodhear)));
 
-            Select dropdownCountry = new Select(Countryelement);     //setting all webelements
-            List<WebElement> countryList = dropdownCountry.getOptions();     //storing all list elements as options.
+            Select dropdownCountry = new Select(Countryelement);     //setting the dropdown element
+            List<WebElement> countryList = dropdownCountry.getOptions();  //storing all list elements as options.
             for(WebElement options : countryList){
-                String text = options.getText();
+                String text = options.getText().trim();
                 System.out.println("total countries in the list " + text);
                 if (text.equalsIgnoreCase(countryOption)){
                     options.click();
                     break;
                 }
+                else {
+                    System.out.println("country is not found");
+                }
             }
+            submitGodhears(formSubmit);
 
 
         }
         catch (ElementNotInteractableException e){
             System.out.println("Element is not interactimg....." + e.getMessage());
         }
+    }
+
+    public String vfySuccessfullmsg(){
+         WebElement submitele = driver.findElement(By.xpath(BreadWebElements.successmsgNew));
+         return submitele.getText();
     }
 
 

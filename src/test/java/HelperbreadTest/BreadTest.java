@@ -7,6 +7,8 @@ import org.example.OurDailyBread.TobBarDropdownOptionSelect;
 import org.example.WebDriverFactory.DriverFactory;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.ITestListener;
 import org.testng.annotations.*;
@@ -14,6 +16,7 @@ import org.testng.annotations.*;
 import java.util.Random;
 @Listeners(ITestListeners.class)               //initialzing Listeners for start, failure, success and finish.
 public class BreadTest {
+    private static final Logger log = LoggerFactory.getLogger(BreadTest.class);
     WebDriver driver;
     DriverFactory factory;
     Helperbread bread;
@@ -89,23 +92,33 @@ public class BreadTest {
        Thread.sleep(5000);
        TobBarDropdownOptionSelect.selectVoicecollection("Caring Well");
    }
-   @Test
+   @Test(alwaysRun = true)
    public void BookandPrice()throws Exception{
        Assert.assertTrue(bread.ClickShop(), "shop is clickable");
        TobBarDropdownOptionSelect.selectTitleoption("VOICES COLLECTION");
        bread.bookprice("Prayer and Pen", "$17.00");
    }
-   @Test( dataProvider = "shippings", dataProviderClass = BreadTestData.class)
+   @Test(alwaysRun = true, description = "Submitting the form", dataProvider = "shippings", dataProviderClass = BreadTestData.class)
    public void BreadourMinistry(String First, String Last, String Email, String Country)throws Exception{
         TobBarDropdownOptionSelect.selectOurministry("God hears her");
         bread.joinNowGodHears();
         bread.fillingForm(First, Last, Email, Country);
+        Thread.sleep(3000);
         String Actualmsg = bread.vfySuccessfullmsg();
-        boolean k = Actualmsg.startsWith("ddnfd");
-        System.out.println(k);
+        System.out.println("Actual Message" + Actualmsg);
         String Expectedmsg = "Welcome to the God Hears Her community! By signing up to receive emails, you’ll see a note from Our Daily Bread Ministries in your inbox. Please use that email to confirm your account to access all the latest God Hears Her news.";
         Assert.assertEquals(Actualmsg.trim(), Expectedmsg.trim(), "messages doesn't matches");
-   }
+        System.out.println("Assertion passed:The success message is correct "  );
+    }
+
+    @Test(alwaysRun = true, description = "checking the podcast")
+    public void Voicecheck()throws Exception{
+        TobBarDropdownOptionSelect.selectOurministry("God hears her");
+        topbar.podCasts("Raising Teens");
+        Thread.sleep(5000);
+        bread.audioPlayPause();
+
+    }
 //   @AfterMethod
 //   public void cleanup(){
 //       driver.manage().deleteAllCookies();

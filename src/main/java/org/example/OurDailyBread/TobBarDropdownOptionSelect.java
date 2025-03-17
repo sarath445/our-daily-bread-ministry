@@ -1,5 +1,6 @@
 package org.example.OurDailyBread;
 
+import org.example.GenericFunctions.Genericmethods;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,14 +11,21 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import static org.example.OurDailyBread.BreadWebElements.episodeSearch;
 import static org.example.OurDailyBread.BreadWebElements.ourMinistry;
 
-public class TobBarDropdownOptionSelect {
+public class TobBarDropdownOptionSelect extends Genericmethods {
+    Logger log = Logger.getLogger(getClass().getName());
     static WebDriver driver;
+    static WebDriverWait wait;
 
     public TobBarDropdownOptionSelect(WebDriver driver) {
+        super(driver);
+
         this.driver = driver;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
     }
 
@@ -28,6 +36,7 @@ public class TobBarDropdownOptionSelect {
     private static By titlevoice = By.xpath("//div[@class='product details product-item-details']//following::a[@class='product-item-link']");
     public static String List_Of_Voice = "//div[@class='product details product-item-details']//following::a[@class='product-item-link']";
     private static By ministries = By.xpath("//span[text()='Our Ministry']");
+
     public static void SelectDropdownOption(String xpath, String option) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
@@ -103,7 +112,7 @@ public class TobBarDropdownOptionSelect {
     }
 
     public static void selectVoicecollection(String voiceName) {
-Actions act = new Actions(driver);
+        Actions act = new Actions(driver);
         try {
             List<WebElement> AllBooksNameInVoiceOption = driver.findElements(By.xpath(List_Of_Voice));
 
@@ -118,47 +127,45 @@ Actions act = new Actions(driver);
                         break;
                     }
 
-                }
-                catch(ElementNotInteractableException e){
+                } catch (ElementNotInteractableException e) {
                     System.out.println("element not interacting... " + e.getMessage());
                 }
             }
-        }
-        catch(NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             System.out.println("Empty List , No elements found : ");
         }
     }
 
-    public static void selectOurministry(String ministry){
+    public static void selectOurministry(String ministry) {
         Actions act = new Actions(driver);
         WebElement breadminis = driver.findElement(ministries);
         act.moveToElement(breadminis).build().perform();
 
-            List<WebElement> searchResults = driver.findElements(By.xpath(BreadWebElements.ourMinistry));
+        List<WebElement> searchResults = driver.findElements(By.xpath(BreadWebElements.ourMinistry));
 
-            for (WebElement result : searchResults) {
+        for (WebElement result : searchResults) {
 
-                String text = result.getText();
+            String text = result.getText();
 
-                System.out.println("text >> " + text);
+            System.out.println("text >> " + text);
 
-                if (text.equalsIgnoreCase(ministry)) {
-                    result.click();
-                    String parentWindow = driver.getWindowHandle();    //getting current window.
-                    Set<String> windowHandles = driver.getWindowHandles(); // Get all window handles
+            if (text.equalsIgnoreCase(ministry)) {
+                result.click();
+                String parentWindow = driver.getWindowHandle();    //getting current window.
+                Set<String> windowHandles = driver.getWindowHandles(); // Get all window handles
 
-                    for (String handle : windowHandles) {
-                        if (!handle.equals(parentWindow)) {
-                            driver.switchTo().window(handle); // Switch to new tab
-                            System.out.println("Switched to new tab.");
-                        }
+                for (String handle : windowHandles) {
+                    if (!handle.equals(parentWindow)) {
+                        driver.switchTo().window(handle); // Switch to new tab
+                        System.out.println("Switched to new tab.");
                     }
-
-                    break;
-
                 }
 
+                break;
+
             }
+
+        }
 
 
 //            act.moveToElement(driver.findElement(By.xpath(BreadWebElements.ourMinistry))).build().perform();
@@ -173,9 +180,39 @@ Actions act = new Actions(driver);
 //
 //            }
 
+    }
+
+    public void podCasts(String audioName) throws Exception {
+        try {
+            WebElement podele = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(BreadWebElements.podcastbtn)));
+            clickingElement(podele);
+            log.info("podcast button clicked");
+
+            WebElement searchEle = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.episodeSearch)));
+            passingInput(searchEle, audioName);
+            log.info("Entered audio name in the field " + audioName);
+            Thread.sleep(3000);
+            WebElement voiceaydio = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()=" +"'"+ audioName + "'"+"]")));
+            String text = voiceaydio.getText();
+            if(text.equalsIgnoreCase(audioName)){
+                voiceaydio.click();
+                Thread.sleep(3000);
+                log.info("clicked on the searched podcast" + audioName);
+            }
+            else {
+                log.warning("podcast name mismatched " + "but found : " + voiceaydio.getText());
+            }
+        }
+        catch (TimeoutException e){
+            log.severe("due to timeout elements are waiting " + e.getMessage() );
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
         }
 
-        }
+    }
+
+}
 
 //*[@id="primaryMenuItem"]/div[3]/a/span[2]
         //*[@class="rounded bg-white/80 shadow p-4 border border-stone-950/10 backdrop-blur-2xl flex flex-col space-y-2 transition ease-out duration-[250ms] pointer-events-none [transform:rotateX(-15deg)] h-0"])[3]//child::div)//child:

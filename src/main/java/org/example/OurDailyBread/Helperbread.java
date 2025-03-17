@@ -11,6 +11,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,17 +20,19 @@ import java.util.Random;
 import java.util.Set;
 // inheriting Genericmethods class.
 public class Helperbread extends Genericmethods {
+    private static final Logger log = LoggerFactory.getLogger(Helperbread.class);
     //initializing web driver and web driverwait.
     WebDriver driver;
     WebDriverWait wait;
     String quantityText;
 
 
+
     //creating constructor and passing parameter
     public Helperbread(WebDriver driver) {
          super(driver);
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         PageFactory.initElements(driver,this);     //improving
         Actions act = new Actions(driver);
     }
@@ -69,6 +73,7 @@ public class Helperbread extends Genericmethods {
                 driver.switchTo().window(handle); // Switch to new tab
                 System.out.println("Switched to new tab.");
                 return true;
+                
             }
         }
         return false;
@@ -248,6 +253,42 @@ public class Helperbread extends Genericmethods {
          WebElement submitele = driver.findElement(By.xpath(BreadWebElements.successmsgNew));
          return submitele.getText();
     }
+
+    public void audioPlayPause()throws Exception{
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        try {
+            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.xpath(BreadWebElements.iframe)));
+            WebElement playele = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(BreadWebElements.playBtn)));
+            js.executeScript("arguments[0].click();", playele);
+            //js.executeScript("arguments[0].play()", playele);
+            //playele.click();
+            log.info("Audio is playing....");
+            Thread.sleep(5000);
+            boolean isPlaying = (boolean) js.executeScript("return !arguments[0].paused;", playele);
+            if(isPlaying){
+                System.out.println("audion is playing fine..");
+            }
+            else {
+                System.out.println("audio is not playing...check");
+            }
+            js.executeScript("arguments[0].paused()", playele);
+            System.out.println("audio is paused..");
+            Thread.sleep(3000);
+            boolean isPaused = (boolean) js.executeScript("return arguments[0].paused", playele);
+            if(isPaused){
+                System.out.println("audio is paused successfully");
+            }
+            else {
+                System.out.println("fail to pause audio");
+            }
+        }
+        catch (Exception e){
+            System.out.println("play button not found" + e.getMessage());
+            WebElement playele = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(BreadWebElements.playBtn)));
+            playele.click();
+        }
+    }
+
 
 
 

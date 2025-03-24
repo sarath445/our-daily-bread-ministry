@@ -92,7 +92,7 @@ public class BreadTest {
        Thread.sleep(5000);
        TobBarDropdownOptionSelect.selectVoicecollection("Caring Well");
    }
-   @Test(alwaysRun = true)
+   @Test(alwaysRun = true, description = "validating the book and related price in voices collection")
    public void BookandPrice()throws Exception{
        Assert.assertTrue(bread.ClickShop(), "shop is clickable");
        TobBarDropdownOptionSelect.selectTitleoption("VOICES COLLECTION");
@@ -111,14 +111,86 @@ public class BreadTest {
         System.out.println("Assertion passed:The success message is correct "  );
     }
 
-    @Test(alwaysRun = true, description = "checking the podcast")
+    @Test(alwaysRun = true, description = "checking the audio file on the podcast")
     public void Voicecheck()throws Exception{
         TobBarDropdownOptionSelect.selectOurministry("God hears her");
         topbar.podCasts("Raising Teens");
         Thread.sleep(5000);
         bread.audioPlayPause();
+    }
+
+    @Test(alwaysRun = true, description = "By clicking the forward button multiple times")
+    public void vfyForwardPlay()throws Exception{
+        TobBarDropdownOptionSelect.selectOurministry("God hears her");
+        topbar.podCasts("Raising Teens");
+        Thread.sleep(5000);
+        bread.forwardPlayClick();
+    }
+    @Test(alwaysRun = true, description ="By clicking the forward and rewind on the audio file" )
+    public void vfyForwardandRewindplay()throws Exception{
+        TobBarDropdownOptionSelect.selectOurministry("God hears her");
+        topbar.podCasts("Raising Teens");
+        Thread.sleep(5000);
+        bread.forwardPlayClick();
+        bread.rewindPlayClick();
+    }
+    @Test(alwaysRun = true, description = "verification of playback speed in the audio file")
+    public void vfySpeedcheck()throws Exception {
+        TobBarDropdownOptionSelect.selectOurministry("God hears her");
+        topbar.podCasts("Raising Teens");
+        Thread.sleep(5000);
+        bread.forwardPlayClick();
+        bread.speedPlay(2);
+    }
+
+    @Test(alwaysRun = true, description = "verify the book is related to the author")
+    public void vfyAuthorarticle()throws Exception{
+        TobBarDropdownOptionSelect.selectOurministry("Reclaim today");
+        bread.reclaimArticle("Depressed");
+        bread.setToggle(true);
+        bread.authorSelection("Hannah shoue");
+    }
+
+    @Test(alwaysRun = true, description = "verify the more options is clicakble and show all the words")
+    public void vfyMoreOption()throws Exception {
+        TobBarDropdownOptionSelect.selectOurministry("Reclaim today");
+        boolean more = bread.moreOptions();
+        Assert.assertTrue(more, "toggle was disabled");
+        topbar.moreWords();
+    }
+    @Test(alwaysRun = true, description = "verify user able to select size of the item")
+    public void vfyAddingSizeofQuantity()throws Exception{
+        TobBarDropdownOptionSelect.selectOurministry("Reclaim today");
+        topbar.reclaimShopping("Clothing");
+        Thread.sleep(3000);
+        bread.shirtSizeselection("XL");
+    }
+    @Test
+    public void vfyAddquantity()throws Exception{
+        TobBarDropdownOptionSelect.selectOurministry("Reclaim today");
+        topbar.reclaimShopping("Clothing");
+        Thread.sleep(3000);
+        bread.shirtSizeselection("XL");
+        Thread.sleep(5000);
+        bread.addQuantity();
+    }
+
+    public void vfyViewCart()throws Exception{
+        TobBarDropdownOptionSelect.selectOurministry("Reclaim today");
+        topbar.reclaimShopping("Clothing");
+        Thread.sleep(3000);
+        bread.shirtSizeselection("XL");
+        Thread.sleep(5000);
+    }
+
+   
 
     }
+
+
+
+
+
 //   @AfterMethod
 //   public void cleanup(){
 //       driver.manage().deleteAllCookies();
@@ -127,4 +199,4 @@ public class BreadTest {
 //    public void teardown(){
 //       driver.quit();
 //    }
-}
+

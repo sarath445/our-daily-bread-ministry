@@ -17,6 +17,7 @@ public class Practise {
             sumlist.add(num);
         }
         System.out.println(sumlist);
+        
 
     }
 

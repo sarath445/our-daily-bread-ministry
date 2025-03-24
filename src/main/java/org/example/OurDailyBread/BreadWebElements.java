@@ -26,7 +26,25 @@ public class BreadWebElements {
     public static String episodeSearch = "//input[@placeholder='Search episodes...']";
     public static String playBtn = "//div[@class='player-grid__controls']/span[@aria-label='Play button']";
     public static String iframe = "//*[@title='Embed Player']";
-
+    public static String forwardBtn = "//div[@class='player-grid__controls']/child::span[@aria-label='Play next episode']";
+    public static String rewindBtn = "//div[@class='player-grid__controls']/child::span[@aria-label='Play previous episode']";
+    public static String speedBtn = "//div[@class='player-grid__controls']/child::span[@aria-label='Player speed1']";
+    public static String duration = "//div[@class='player-grid__duration']/time[1]";
+    public static String searchReclaim = "(//div[@class='searchwp-form-input-container swp-items-stretch']/child::input[@type='search'])[1]";
+    public static String toggleBtnss = "//div[@class='swp-toggle-switch swp-toggle-switch--mini']";
+    public static String authorNames = "//select[@class='swp-select']/option";
+    public static String articleImage = "//a[@href='https://reclaimtoday.org/burdens-and-freedom-in-christ/']//div//child::img";
+    public static String moreOption = "(//span[text()='More...'])[1]";
+    public static String moreWordss = "//div[@data-elementor-type='loop-item']";
+    public static String shopDropdownElement= "//a[@class='elementor-item menu-link has-submenu highlighted']//following-sibling::ul/li";
+    public static String shopBtn = "(//span[@role='application']//parent::a[contains(text(),'Shop')])[1]";
+    public static String tShirt = "(//a[@href='https://reclaimtoday.org/product/short-sleeve-tshirt/'])[1]";
+    public static String sizeDropdown = "//select[@id='pa_size']";
+    public static String cartMsg = "//div[@class='woocommerce-message']/text()[normalize-space()]";
+    public static String addTocartBtn = "//button[text()='Add to cart']";
+    public static String plusBtn = "//*[@class='product_title entry-title']//following::a[contains(@id,'plus_qty')]";
+    public static String quantity = "//*[@class='product_title entry-title']//following::input[@type='number']";
+    public static String viewCartbtn = "//a[text()='View cart']";
 
 
 }

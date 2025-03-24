@@ -20,12 +20,16 @@ public class TobBarDropdownOptionSelect extends Genericmethods {
     Logger log = Logger.getLogger(getClass().getName());
     static WebDriver driver;
     static WebDriverWait wait;
+    Actions act;
+    JavascriptExecutor js;
 
     public TobBarDropdownOptionSelect(WebDriver driver) {
         super(driver);
 
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        act = new Actions(driver);
+        js = (JavascriptExecutor) driver;
 
     }
 
@@ -211,6 +215,46 @@ public class TobBarDropdownOptionSelect extends Genericmethods {
         }
 
     }
+
+    public void moreWords()throws Exception{
+        try {
+             List<WebElement> wordsMore = driver.findElements(By.xpath(BreadWebElements.moreWordss));
+             for(WebElement options : wordsMore){
+                 String text = options.getText();
+                 System.out.println("list of words are:" + text);
+             }
+        }
+        catch (Exception e){
+            System.out.println("words are not found" + e.getMessage());
+        }
+
+    }
+
+    public void reclaimShopping(String category)throws Exception{
+            try {
+                Thread.sleep(3000);
+                WebElement shopele = driver.findElement(By.xpath(BreadWebElements.shopBtn));
+                hoverOverElement(shopele);
+                clickingElement(shopele);
+                hoverOverElement(shopele);
+                List<WebElement> shopDrop = driver.findElements(By.xpath(BreadWebElements.shopDropdownElement));
+                for(WebElement options : shopDrop){
+                    String text = options.getText();
+                    System.out.println("shopping category :" + text);
+                    if(text.equalsIgnoreCase(category)){
+                        clickingElement(options);
+                        break;
+                    }
+                }
+
+            }
+            catch (Exception e){
+                System.out.println("element is not foundable" + e.getMessage());
+
+            }
+    }
+
+
 
 }
 

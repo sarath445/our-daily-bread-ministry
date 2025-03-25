@@ -175,13 +175,27 @@ public class BreadTest {
         bread.addQuantity();
     }
 
+    @Test(alwaysRun = true, description = "verify user able to view items after adding items to the cart")
     public void vfyViewCart()throws Exception{
         TobBarDropdownOptionSelect.selectOurministry("Reclaim today");
         topbar.reclaimShopping("Clothing");
         Thread.sleep(3000);
         bread.shirtSizeselection("XL");
         Thread.sleep(5000);
+        topbar.addView();
     }
+
+    @Test(alwaysRun = true, description = "verify the user able to click the prayer option in Connect with God and do the verification")
+    public void vfyPrayer()throws Exception{
+        TobBarDropdownOptionSelect.selectOurministry("Reclaim today");
+        topbar.connectWithGodReclaim("prayer");
+        Thread.sleep(3000);
+        String expectedText = "Prayers";
+        String expectedPara = "Building a Christian prayer life can be difficult—perhaps you don’t know how to pray, or maybe you don’t feel like praying. We hope our simple prayers written for practical, everyday life situations can provide some guidance and help you connect with God, wherever you are, and in whatever you’re doing!";
+        Assert.assertTrue(bread.vfyPrayermessage(expectedText,expectedPara), "text and paragraph are don't match");
+    }
+
+
 
    
 

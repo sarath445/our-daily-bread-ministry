@@ -45,6 +45,11 @@ public class BreadWebElements {
     public static String plusBtn = "//*[@class='product_title entry-title']//following::a[contains(@id,'plus_qty')]";
     public static String quantity = "//*[@class='product_title entry-title']//following::input[@type='number']";
     public static String viewCartbtn = "//a[text()='View cart']";
+    public static String connectWithGodElement = "(//span[@role='application']//parent::a[contains(text(),'Connect with God')])[1]";
+    public static String connectWithGodDropdownelements = "(//span[@role='application']//parent::a[contains(text(),'Connect with God')])[1]//following-sibling::ul/li";
+    public static String prayerText = "//h1[contains(text(),'Prayers')]";
+    public static String prayerPara = "//div[@data-id='c2f9cc9']//child::p";
+    public static String searchPrayer = "//div[@class='searchwp-form-input-container swp-items-stretch']//child::input";
 
 
 }

@@ -246,13 +246,57 @@ public class TobBarDropdownOptionSelect extends Genericmethods {
                         break;
                     }
                 }
-
             }
             catch (Exception e){
                 System.out.println("element is not foundable" + e.getMessage());
 
             }
     }
+    public void addView()throws Exception{
+        addTocart();
+        viewCart();
+    }
+
+    public void connectWithGodReclaim(String category)throws Exception{
+             try {
+                 WebElement connetele = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(BreadWebElements.connectWithGodElement)));
+                 hoverOverElement(connetele);
+                 clickingElement(connetele);
+                 hoverOverElement(connetele);
+                 List<WebElement> connectDrop = driver.findElements(By.xpath(BreadWebElements.connectWithGodDropdownelements));
+                 System.out.println("list of connects " + connectDrop);
+                 for(WebElement options : connectDrop){
+                     String text = options.getText();
+                     if(text.equalsIgnoreCase(category)){
+                         System.out.println("connecting category " + text);
+                         clickingElement(options);
+                         break;
+                     }
+                 }
+             }
+             catch (Exception e){
+                  System.out.println("exception error " + e.getMessage());
+             }
+    }
+    public boolean prayerSearch(String names)throws Exception{
+        WebElement searcele = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(BreadWebElements.searchPrayer)));
+        if(searcele.isEnabled()){
+            clickingElement(searcele);
+            passingInput(searcele, names);
+            System.out.println("search option is enable");
+            return true;
+        }
+        else {
+            System.out.println("search is disabled");
+            return false;
+        }
+
+    }
+
+
+
+
+
 
 
 

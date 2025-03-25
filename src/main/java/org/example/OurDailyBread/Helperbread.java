@@ -464,7 +464,18 @@ public class Helperbread extends Genericmethods {
             System.out.println("Elements not found" + e.getMessage());
 
         }
+    }
 
+    public String getPrayertext(){
+        WebElement textele = driver.findElement(By.xpath(BreadWebElements.prayerText));
+        return textele.getText();
+    }
+    public String getPrayerpara(){
+        WebElement paraele = driver.findElement(By.xpath(BreadWebElements.prayerPara));
+        return paraele.getText();
+    }
+    public boolean vfyPrayermessage(String expectedtext, String expectedpara){
+        return getPrayertext().equalsIgnoreCase(expectedtext) && getPrayerpara().equalsIgnoreCase(expectedpara);
     }
 
 
